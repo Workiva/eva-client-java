@@ -1,0 +1,38 @@
+name: ecs_integration_tests
+image: drydock.workiva.net/workiva/skynet-images:java-8-with-mvn-latest # https://github.com/Workiva/skynet-images/commits/java-8-with-mvn
+
+contact: Contact Tyler Wilding for questions regarding these tests
+description: Exercises the functional tests that hit the client-service
+
+run:
+  on-pull-request: true
+  when-branch-name-is:
+    - master
+
+requires:
+  Workiva/eva-client-service: docker
+
+env:
+  - MAVEN_OPTS="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+  - ECS_URL="http://eva-client-service:8080"
+
+scripts:
+  # Spin up Docker containers
+  - docker-compose version
+  - >-
+     docker-compose -f docker/docker-compose.yml
+     -f docker/docker-compose.skynet.yml
+     up --build --force-recreate -d
+  - >-
+     docker-compose -f docker/docker-compose.yml
+     -f docker/docker-compose.skynet.yml
+     logs -f > /shared/logs/docker-compose.log &
+  # Wait for client-service to spin-up
+  - wget -q -O /dev/stdout --tries=30 --wait=2 --retry-connrefused --content-on-error http://eva-client-service:8080/actuator/health
+  # Java 101 Tests
+  - mvn -B test-compile && mvn -B exec:java -Dexec.mainClass="examples.eva101.Eva101" -Dexec.classpathScope="test"
+  
+timeout: moderate
+
+artifacts:
+  - /shared/logs
