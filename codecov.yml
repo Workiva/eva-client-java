@@ -1,0 +1,15 @@
+# codecov inherits bot from team, do not add bot to this yml
+codecov:
+  url: "https://codecov.workiva.net"
+
+coverage:
+  precision: 3
+  round: down
+  range: "75...90"
+
+comment:
+  layout: "header, diff, changes, sunburst, uncovered, tree"
+  behavior: default
+
+ignore:
+  - "src/main/clojure"

@@ -1,0 +1,10 @@
+title: Eva Client Java
+base: github:Workiva/eva-client-java/docs/
+src: README.md
+topics:
+  - title: Java
+    src: readme_java.md
+  - title: Clojure
+    src: readme_clojure.md
+  - title: Exceptions and Sanitization
+    src: eva_exceptions.md
