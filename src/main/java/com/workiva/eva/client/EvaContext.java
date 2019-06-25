@@ -40,7 +40,7 @@ public class EvaContext {
   }
 
   public EvaContext(String correlationId) {
-      this.correlationId = correlationId;
+    this.correlationId = correlationId;
   }
 
   public EvaContext(String correlationId, SpanContext spanContext) {

@@ -75,12 +75,12 @@ public class Eva101 {
       System.out.println("basis-t: " + afterDb.basisT());
       System.out.println("snapshot-t: " + afterDb.snapshotT());
 
-      // Eva Client Service supports tracing via Jaeger, if you set and use a Jaeger tracer as shown below, you can
+      // Eva Client Service supports tracing via Jaeger, if you set and use a Jaeger tracer as shown
+      // below, you can
       // connect your traces to the Eva Client Service's traces.
       // JaegerTracer tracer = new JaegerTracer.Builder("Eva Client Java Example").build();
       // GlobalTracer.register(tracer);
       Tracer tracer = GlobalTracer.get();
-
 
       // Add First Book
       Span span = tracer.buildSpan("add-first-book").start();
@@ -254,10 +254,7 @@ public class Eva101 {
       result = db.ident(1);
       System.out.println("ident results: " + result);
 
-      result =
-          new LatestTBuilder(conn)
-              .withCorrelationId("latestT")
-              .execute();
+      result = new LatestTBuilder(conn).withCorrelationId("latestT").execute();
       System.out.println("latestT results: " + result);
 
       // Ident and Entid endpoints

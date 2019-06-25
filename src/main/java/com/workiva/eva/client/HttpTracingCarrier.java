@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Used to inject Tracing spans into request headers.
- * This only supports injecting tracing headers into the request header, and not extracting.
+ * Used to inject Tracing spans into request headers. This only supports injecting tracing headers
+ * into the request header, and not extracting.
  */
 class HttpTracingCarrier implements io.opentracing.propagation.TextMap {
   HttpRequestBase requestBase;
