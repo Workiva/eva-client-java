@@ -33,6 +33,10 @@ import com.workiva.eva.client.inline.InlineFunction;
 import com.workiva.eva.client.inline.PeerFunctions;
 import com.workiva.eva.client.inline.UtilFunctions;
 
+import io.opentracing.Span;
+import io.opentracing.Tracer;
+import io.opentracing.util.GlobalTracer;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -54,18 +58,14 @@ public class Eva101 {
             }
           };
 
-      // WTracer tracer = new WTracer();
-
       // Transact Schema
       Connection conn = Client.connect(connectionConfig);
 
       Object result;
 
-      // try (Span span = tracer.buildSpan("tx-schema").start()) {
       result =
           new TransactBuilder(conn, (List) eva.Util.read(Transactions.defaultSchema))
               .withCorrelationId("tx-schema")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println("Transact Schema: " + result + "\n\n");
 
@@ -75,152 +75,130 @@ public class Eva101 {
       System.out.println("basis-t: " + afterDb.basisT());
       System.out.println("snapshot-t: " + afterDb.snapshotT());
 
+      // Eva Client Service supports tracing via Jaeger, if you set and use a Jaeger tracer as shown below, you can
+      // connect your traces to the Eva Client Service's traces.
+      // JaegerTracer tracer = new JaegerTracer.Builder("Eva Client Java Example").build();
+      // GlobalTracer.register(tracer);
+      Tracer tracer = GlobalTracer.get();
+
+
       // Add First Book
-      // try (Span span = tracer.buildSpan("tx-book").start()) {
+      Span span = tracer.buildSpan("add-first-book").start();
       result =
           new TransactBuilder(conn, (List) eva.Util.read(Transactions.addBook))
               .withCorrelationId("tx-book")
-              // .withSpanContext(span.context())
+              .withSpanContext(span.context())
               .execute();
       System.out.println("Add First Book: " + result + "\n\n");
+      span.finish();
 
       // Query First Book
       Database db = conn.db();
-      // try (Span span = tracer.buildSpan("query-first-book").start()) {
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.queryFirstBook))
               .withCorrelationId("query-first-book")
-              // .withSpanContext(span.context())
               .withArgs("First Book")
               .execute();
       System.out.println("Query First Book: " + result + "\n\n");
 
       // Add Many Books
-      // try (Span span = tracer.buildSpan("tx-many-books").start()) {
       result =
           new TransactBuilder(conn, (List) eva.Util.read(Transactions.addManyBooks))
               .withCorrelationId("tx-many-books")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println("Add Many Books: " + result + "\n\n");
 
       // Query Books From 2017
       db = conn.db();
-      // try (Span span = tracer.buildSpan("query-books-2017").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.queryBooksFrom2017))
               .withCorrelationId("query-books-2017")
-              // .withSpanContext(span.context())
               .withArgs(2017)
               .execute();
       System.out.println("Query Books From 2017: " + result + "\n\n");
 
       // Query Author of "Designing Data-Intensive Applications"
-      // try (Span span = tracer.buildSpan("query-author-data-intensive-book").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.queryAuthorDataIntensiveApplications))
               .withCorrelationId("query-author-data-intensive-book")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println(
           "Query Author of Designing Data-Intensive Applications: " + result + "\n\n");
 
       // Query Author ID of "Designing Data-Intensive Applications"
-      // try (Span span = tracer.buildSpan("query-author-id-data-intensive-book").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.queryAuthorIdDataIntensiveApplications))
               .withCorrelationId("query-author-id-data-intensive-book")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println(
           "Query Author Id of Desgining Data-Intensive Applications: " + result + "\n\n");
 
       // Query Books from Author Steve McConnell
-      // try (Span span = tracer.buildSpan("query-books-steve-mcconnell").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.queryBooksFromAuthor))
               .withCorrelationId("query-books-steve-mcconnell")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println("Query Books from Author Steve McConnell: " + result + "\n\n");
 
       // Pull Book by First Id
-      // try (Span span = tracer.buildSpan("tx-schema").start()) {}
-
       result = new PullBuilder(db, "[*]").withEntityId(8796093023236L).execute();
       System.out.println("Pull Book By First Id: " + result + "\n\n");
 
       // Query All Book Names
-      // try (Span span = tracer.buildSpan("query-all-book-names").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.queryAllBookNames))
               .withCorrelationId("query-all-book-names")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println("Query All Book Names: " + result + "\n\n");
 
       // Find when a book was commited to the database
-      // try (Span span = tracer.buildSpan("query-find-book-committed").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.findWhenBookCommitted))
               .withCorrelationId("query-find-book-committed")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println("Find when a book was commited to the database: " + result + "\n\n");
 
       // Find book titles and their year released prior to 2005
-      // try (Span span = tracer.buildSpan("query-books-before-2005").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.findBooksBefore2005))
               .withCorrelationId("query-books-before-2005")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println(
           "Find book titles and their year released prior to 2005: " + result + "\n\n");
 
       // Find books older than “Software Project Survival Guide”
-      // try (Span span = tracer.buildSpan("query-books-older-than-survival-guide").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.findBooksOlderThanSurvivalGuide))
               .withCorrelationId("query-books-older-than-survival-guide")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println(
           "Find books older than “Software Project Survival Guide: " + result + "\n\n");
 
       // Query for the oldest book
-      // try (Span span = tracer.buildSpan("query-oldest-book").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.queryForOldestBook))
               .withCorrelationId("query-oldest-book")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println("Query for the oldest book: " + result + "\n\n");
 
       // Get Books with Rules
-      // try (Span span = tracer.buildSpan("query-books-with-rules").start()) {}
       result =
           new QueryBuilder(db, (List) eva.Util.read(Queries.findBooksWithRules))
               .withArgs(Util.read(Queries.queryRule))
               .withCorrelationId("query-books-with-rules")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println("Get Books with Rules: " + result + "\n\n");
 
       // Invoke CAS
-      // try (Span span = tracer.buildSpan("tx-schema").start()) {}
-
       result =
           new InvokeBuilder(db, Keyword.intern("db.fn", "cas"))
               .withCorrelationId("invoke-cas")
-              // .withSpanContext(tracer.buildSpan("invoke-cas").start().context())
               .withArgs(
                   db, 0, Keyword.intern("db", "doc"), "The default database partition.", "Testing")
               .execute();
       System.out.println("Invoke CAS: " + result + "\n\n");
 
       // Inline functions!
-      // try (Span span = tracer.buildSpan("query-ffirst-query-inline-func").start()) {}
       InlineFunction inlineAsOf =
           UtilFunctions.ffirst(
               PeerFunctions.query(
@@ -232,12 +210,10 @@ public class Eva101 {
                   inlineAsOfDb,
                   (List) eva.Util.read("[:find ?b :in $ ?t :where [?b :book/title ?t]]"))
               .withCorrelationId("query-ffirst-query-inline-func")
-              // .withSpanContext(span.context())
               .withArgs("First Book")
               .execute();
       System.out.println("Ffirst and Query Inline Function: " + result);
 
-      // try (Span span = tracer.buildSpan("query-ident-inline-func").start()) {
       InlineFunction identFunc = DatabaseFunctions.ident(db, 1);
       result =
           new QueryBuilder(
@@ -246,23 +222,19 @@ public class Eva101 {
                       eva.Util.read(
                           "[:find ?ident :in $ ?my-ident :where [?my-ident :db/ident ?ident]]"))
               .withCorrelationId("query-ident-inline-func")
-              // .withSpanContext(span.context())
               .withArgs(identFunc)
               .execute();
       System.out.println("Ident func Inline function: " + result);
 
-      // try (Span span = tracer.buildSpan("query-entid-inline-func").start()) {}
       InlineFunction entidFunc = DatabaseFunctions.entid(db, Keyword.intern("db.part", "tx"));
       result =
           new QueryBuilder(
                   db, (List) eva.Util.read("[:find ?ident :in $ ?e :where [?e :db/ident ?ident]]"))
               .withCorrelationId("query-entid-inline-func")
-              // .withSpanContext(span.context())
               .withArgs(entidFunc)
               .execute();
       System.out.println("Entid func Inline function: " + result);
 
-      // try (Span span = tracer.buildSpan("query-latestt-inline-func").start()) {}
       InlineFunction latestTFunc = ConnectionFunctions.latestT(conn);
       Database latestTDb = conn.dbAt(latestTFunc);
       result =
@@ -270,7 +242,6 @@ public class Eva101 {
                   latestTDb,
                   (List) eva.Util.read("[:find ?e :in $ :where [?e :db/ident :db.part/tx]]"))
               .withCorrelationId("query-latestt-inline-func")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println("LatestT Inline function: " + result);
 
@@ -283,11 +254,9 @@ public class Eva101 {
       result = db.ident(1);
       System.out.println("ident results: " + result);
 
-      // try (Span span = tracer.buildSpan("latestT").start()) {}
       result =
           new LatestTBuilder(conn)
               .withCorrelationId("latestT")
-              // .withSpanContext(span.context())
               .execute();
       System.out.println("latestT results: " + result);
 

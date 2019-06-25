@@ -14,6 +14,10 @@
 
 package com.workiva.eva.client;
 
+import io.opentracing.SpanContext;
+import io.opentracing.propagation.Format;
+import io.opentracing.util.GlobalTracer;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +28,7 @@ public class EvaContext {
   private static final Logger LOGGER = LoggerFactory.getLogger(EvaContext.class);
 
   private final String correlationId;
-  // TODO - add Open Tracing Support
-  // private SpanContext spanContext;
+  private SpanContext spanContext;
 
   public EvaContext() {
     this(UUID.randomUUID().toString());
@@ -37,30 +40,30 @@ public class EvaContext {
   }
 
   public EvaContext(String correlationId) {
-    this.correlationId = correlationId;
+      this.correlationId = correlationId;
   }
 
-  // TODO - add Open Tracing Support
-  // public EvaContext(String correlationId, SpanContext spanContext) {
-  //   this.correlationId = correlationId;
-  //   setSpanContext(spanContext);
-  // }
+  public EvaContext(String correlationId, SpanContext spanContext) {
+    this(correlationId);
+    setSpanContext(spanContext);
+  }
 
   public String getCorrelationId() {
     return correlationId;
   }
 
-  // TODO - add Open Tracing Support
-  // public void setSpanContext(SpanContext spanContext) {
-  //   this.spanContext = spanContext;
-  // }
+  public void setSpanContext(SpanContext spanContext) {
+    this.spanContext = spanContext;
+  }
 
-  // public SpanContext getSpanContext() {
-  //   return spanContext;
-  // }
+  public SpanContext getSpanContext() {
+    return spanContext;
+  }
 
-  // TODO - inject tracing headers into request using JaegerTracing
-  // public void addTracingHeaders(HttpRequestBase request) {
-  //   return;
-  // }
+  void addTracingHeaders(HttpRequestBase request) {
+    if (spanContext != null) {
+      GlobalTracer.get()
+          .inject(spanContext, Format.Builtin.HTTP_HEADERS, new HttpTracingCarrier(request));
+    }
+  }
 }

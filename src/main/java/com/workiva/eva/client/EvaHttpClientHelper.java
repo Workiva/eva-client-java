@@ -120,7 +120,7 @@ public class EvaHttpClientHelper implements EvaClientHelper {
   private void addHeaders(EvaContext context, List<Header> headers, HttpRequestBase request) {
 
     request.setHeader(CORRELATION_ID_HEADER, context.getCorrelationId());
-    // context.addTracingHeaders(request);
+    context.addTracingHeaders(request);
     requestMiddleware(request);
 
     headers.forEach((h) -> request.setHeader(h));

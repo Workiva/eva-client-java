@@ -70,8 +70,7 @@ public abstract class RequestBuilder<T extends RequestBuilder<T, V>, V> {
   protected EvaContext buildContext() {
     if (correlationId == null) {
       ctx = new EvaContext();
-      // TODO - opentracing
-      // ctx.setSpanContext(spanContext);
+       ctx.setSpanContext(spanContext);
     } else {
       ctx = new EvaContext(correlationId);
     }
