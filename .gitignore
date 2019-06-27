@@ -37,3 +37,4 @@ target/
 dbs/
 compose_remote*
 .DS_Store
+node_modules/

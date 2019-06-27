@@ -10,12 +10,31 @@
     <version>0.0.0</version>
     <packaging>jar</packaging>
 
+    <name>EVA Client Library</name>
+    <description>Java library for interacting with the eva-client-service.  Also provides native Clojure bindings.</description>
+    <licenses>
+      <license>
+        <name>Apache License, Version 2.0</name>
+        <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <distribution>repo</distribution>
+        <comments>A business-friendly OSS license</comments>
+      </license>
+    </licenses>
+
     <repositories>
         <repository>
             <id>clojars.org</id>
             <url>https://repo.clojars.org</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>clojars</id>
+            <name>Clojars repository</name>
+            <url>https://clojars.org/repo</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>

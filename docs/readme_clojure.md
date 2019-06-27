@@ -1,4 +1,4 @@
-### Clojure
+# Clojure Documentation
 
 This guide will go over how to use Eva Client Java using Clojure.
 
@@ -22,7 +22,7 @@ This guide will go over how to use Eva Client Java using Clojure.
 
 <!-- tocstop -->
 
-#### Creating a Connection
+## Creating a Connection
 
 The first thing you need to do is create a connection. You can create a connection by passing a map to the `connect` function.
 
@@ -35,14 +35,14 @@ The first thing you need to do is create a connection. You can create a connecti
 							 :label "label" }))
 ```
 
-#### Transact
+## Transact
 
 You can then transact as you normally would:
 ```clj
 (eva/transact conn [[:db/add (eva/tempid :db.part/user) :book/title "First Book"]]) 
 ```
 
-#### Query
+## Query
 
 Once you've transacted some data, you'll be able to perform queries to retrieve that data. The first step in being able to query is getting your `Database`.
 ```clj
@@ -67,7 +67,7 @@ You can also pass arguments to your queries:
 			[?b :book/title ?title]], db, 2017)
 ```
 
-#### Pull
+## Pull
 
 Pull is also done the same as you normally do with the Eva API.
 
@@ -77,7 +77,7 @@ Pull is also done the same as you normally do with the Eva API.
 
 
 
-#### Invoke
+## Invoke
 
 It is also possible to invoke functions with the Eva Client Service through invoke.
 
@@ -85,7 +85,7 @@ It is also possible to invoke functions with the Eva Client Service through invo
 (eva/invoke db :db.fn/cas db 0 :db/doc "The default database partition." "Testing")
 ```
 
-#### to-tx-eid
+## to-tx-eid
 
 Given a transaction id, you can get the entity id of that transaction
 
@@ -93,15 +93,15 @@ Given a transaction id, you can get the entity id of that transaction
 (eva/to-tx-eid db 1)
 ```
 
-#### ident
+## ident
 
 Ident gives you the ability to get the ident of an entity, with a given entity id.
 
 ```clj
 (eva/ident db 1)
-````
+```
 
-#### entid
+## entid
 
 This does the reverse of ident, it gives you the ability to get an entity id with a given ident.
 
@@ -109,7 +109,7 @@ This does the reverse of ident, it gives you the ability to get an entity id wit
 (eva/entid db :db.fn/cas)
 ```
 
-#### Inline Functions
+## Inline Functions
 
 In the cases where you want to chain together Eva Client functions, you might have to do multiple requests.
 To cut down on this you might be able to use inline functions. Inline functions can be passed as arguments to Eva Client functions
@@ -136,7 +136,7 @@ This is why our inline query is wrapped in the `InlineFunction` `ffirst` so that
 
 The inline functions that are currently supported are:
 
-##### Query
+### Query
 
 Performs a query
 
@@ -144,7 +144,7 @@ Performs a query
 (inline/q '[:find ?tx :in $ ?t :where [?b :book/title ?t ?tx]] db "First Book")
 ```
 
-##### latestT
+### latestT
 
 Gets the latest tx id on a `Connection`
 
@@ -152,7 +152,7 @@ Gets the latest tx id on a `Connection`
 (inline/latest-t conn)
 ```
 
-##### entid
+### entid
 
 Determines the entity id of an ident
 
@@ -160,7 +160,7 @@ Determines the entity id of an ident
 (inline/entid db :db.part/tx)
 ```
 
-##### ident
+### ident
 
 Determines the ident of an entity id.
 
@@ -168,7 +168,7 @@ Determines the ident of an entity id.
 (inline/ident db 1)
 ```
 
-##### first
+### first
 
 Returns the first item in a collection.
 
@@ -177,7 +177,7 @@ inline/first(
   (inline/q '[:find ?ident :in $ eid :where [?eid :db/ident ?ident]] db))
 ```
 
-##### ffirst
+### ffirst
 
 Returns the first item of the first item in a collection. This is equivalent to wrapping a `first` in another `first`. 
 

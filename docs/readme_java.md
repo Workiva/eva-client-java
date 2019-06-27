@@ -1,4 +1,4 @@
-### Java
+# Java
 
 This guide will go over how to use Eva Client Java with Java.
 
@@ -11,7 +11,6 @@ This guide will go over how to use Eva Client Java with Java.
 - [Invoke](#invoke)
 - [toTxEid](#totxeid)
 - [ident](#ident)
-- [entid](#entid)
 - [Inline Functions](#inline-functions)
   * [Query](#query-1)
   * [latestT](#latestt)
@@ -22,7 +21,7 @@ This guide will go over how to use Eva Client Java with Java.
 
 <!-- tocstop -->
 
-#### Creating a Connection
+## Creating a Connection
 
 The first thing you'll need to do is get a `Connection`. To get a connection, you need to create a connection configuration map.
 A connection configuration map is a map that contains the following:
@@ -55,7 +54,7 @@ or to get Eva databases that you can query with. To create a connection do the f
 Connection conn = Peer.connect(connectionConfig);
 ```
 
-#### Transact
+## Transact
 
 You can then the start transacting as you would normally with Eva:
 ```
@@ -67,7 +66,7 @@ conn.transact("[" +
 
 It should also be noted, that both transact and query can be passed datastructures instead of their string representations as well.
 
-#### Query
+## Query
 
 Before you do a query, you first have to create a `Database`.
 
@@ -101,7 +100,7 @@ List result = Peer.query("[:find ?title :in $ ?year :where " +
 ```
 
 
-#### Pull
+## Pull
 
 Pull is also done the same as you normally do with the Eva API.
 
@@ -109,7 +108,7 @@ Pull is also done the same as you normally do with the Eva API.
 List result = db.pull("[*]", someEntityId);
 ```
 
-#### Invoke
+## Invoke
 
 It is also possible to invoke functions with the Eva Client Service through invoke.
 
@@ -117,7 +116,7 @@ It is also possible to invoke functions with the Eva Client Service through invo
 result = db.invoke(Keyword.intern("db.fn", "cas"), db, 0, Keyword.intern("db", "doc"), "The default database partition.", "Testing");
 ```
 
-#### toTxEid
+## toTxEid
 
 Given a transaction id, you can get the entity id of that transaction
 
@@ -125,7 +124,7 @@ Given a transaction id, you can get the entity id of that transaction
 result = Client.toTxEid(db, 1);
 ```
 
-#### ident
+## ident
 
 Ident gives you the ability to get the ident of an entity, with a given entity id.
 
@@ -142,7 +141,7 @@ db.entid(Keyword.intern("db.fn", "cas");
 ```
 
 
-#### Inline Functions
+## Inline Functions
 
 In the cases where you want to chain together Eva Client functions, you might have to do multiple requests.
 To cut down on this you might be able to use inline functions. Inline functions can be passed as arguments to Eva Client functions
@@ -167,7 +166,7 @@ If not, `ffirst` gets the first item out of the first item in a collection.
 
 The inline functions that are currently supported are:
 
-##### Query
+### Query
 
 Performs a query
 
@@ -175,7 +174,7 @@ Performs a query
 InlineFunction query = PeerFunctions.query("[:find ?tx :in $ ?t :where [?b :book/title ?t ?tx]]", db, "First Book");
 ```
 
-##### latestT
+### latestT
 
 Gets the latest tx id on a `Connection`
 
@@ -183,7 +182,7 @@ Gets the latest tx id on a `Connection`
 InlineFunction latestT = ConnectionFunctions.latestT(conn);
 ```
 
-##### entid
+### entid
 
 Determines the entity id of an ident
 
@@ -191,7 +190,7 @@ Determines the entity id of an ident
 InlineFunction entid = DatabaseFunctions.entid(db, Keyword.intern("db.part", "tx"));
 ```
 
-##### ident
+### ident
 
 Determines the ident of an entity id.
 
@@ -199,7 +198,7 @@ Determines the ident of an entity id.
 InlineFunction ident = DatabaseFunctions.entid(db, 1);
 ```
 
-##### first
+### first
 
 Returns the first item in a collection.
 
@@ -209,7 +208,7 @@ InlineFunction first = UtilFunctions.first(
 );
 ```
 
-##### ffirst
+### ffirst
 
 Returns the first item of the first item in a collection. This is equivalent to wrapping a `first` in another `first`. 
 

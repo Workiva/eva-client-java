@@ -1,5 +1,18 @@
 # Eva Client Java
 
+<!-- toc -->
+
+- [Overview](#overview)
+  * [Environment Variables](#environment-variables)
+    + [EVA_SANITIZE_EXCEPTIONS](#eva_sanitize_exceptions)
+- [Maintainers and Contributors](#maintainers-and-contributors)
+  * [Active Maintainers](#active-maintainers)
+  * [Previous Contributors](#previous-contributors)
+
+<!-- tocstop -->
+
+## Overview
+
 This library provides an easy way to interact with the [Eva Client Service](https://github.com/Workiva/eva-client-service).
 
 This library should closely resemble [Eva's API](https://github.com/Workiva/eva).
