@@ -189,7 +189,7 @@ jobs:
             - v1-dependencies-
       - run: cp -R /home/circleci/.m2 ~/
       - run: cp ./.circleci/clojars/settings.xml ~/.m2/settings.xml
-      # - run: mvn deploy
+      - run: mvn deploy
 
 workflows:
   eva_client_java_workflow:
@@ -261,11 +261,8 @@ workflows:
             - build_jar
           # Only run on tagged builds starting with 'v'
           # Therefore, releases MUST start with 'v'
-          # filters:
-          #   tags:
-          #     only: /^v.*/
-          #   branches:
-          #     ignore: /.*/
           filters:
             tags:
-              only: /.*/
+              only: /^v.*/
+            branches:
+              ignore: /.*/
