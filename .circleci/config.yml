@@ -187,8 +187,8 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}
             - v1-dependencies-
-      - run: cp ./.circleci/clojars/settings.xml ~/.m2/settings.xml
       - run: cp -R /home/circleci/.m2 ~/
+      - run: cp ./.circleci/clojars/settings.xml ~/.m2/settings.xml
       # - run: mvn deploy
 
 workflows:
