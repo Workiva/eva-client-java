@@ -9,9 +9,8 @@
     <name>eva-client-java</name>
     <version>0.0.0</version>
     <packaging>jar</packaging>
-
-    <name>EVA Client Library</name>
     <description>Java library for interacting with the eva-client-service.  Also provides native Clojure bindings.</description>
+
     <licenses>
       <license>
         <name>Apache License, Version 2.0</name>
