@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.workiva.eva.client</groupId>
-    <artifactId>eva-client-java</artifactId>
-    <name>eva-client-java</name>
+    <artifactId>eva-client</artifactId>
+    <name>eva-client</name>
     <version>0.0.0</version>
     <packaging>jar</packaging>
     <description>Java library for interacting with the eva-client-service.  Also provides native Clojure bindings.</description>
