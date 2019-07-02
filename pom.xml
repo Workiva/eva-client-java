@@ -5,10 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.workiva.eva.client</groupId>
-    <artifactId>eva-client-java</artifactId>
-    <name>eva-client-java</name>
+    <artifactId>eva-client</artifactId>
+    <name>eva-client</name>
     <version>0.0.0</version>
     <packaging>jar</packaging>
+    <description>Java library for interacting with the eva-client-service.  Also provides native Clojure bindings.</description>
+
+    <licenses>
+      <license>
+        <name>Apache License, Version 2.0</name>
+        <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <distribution>repo</distribution>
+        <comments>A business-friendly OSS license</comments>
+      </license>
+    </licenses>
 
     <repositories>
         <repository>
@@ -16,6 +26,14 @@
             <url>https://repo.clojars.org</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>clojars</id>
+            <name>Clojars repository</name>
+            <url>https://clojars.org/repo</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>

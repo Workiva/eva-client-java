@@ -1,0 +1,25 @@
+{
+  "name": "eva-client-java",
+  "version": "1.0.0",
+  "description": "<!-- toc -->",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Workiva/eva-client-java.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Workiva/eva-client-java/issues"
+  },
+  "homepage": "https://github.com/Workiva/eva-client-java#readme",
+  "dependencies": {
+    "markdown-toc": "^1.2.0"
+  }
+}

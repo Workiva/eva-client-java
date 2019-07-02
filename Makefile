@@ -21,3 +21,6 @@ fmt:
 
 test:
 	mvn -Dcheckstyle.skip test
+
+update-tocs:
+	./.circleci/scripts/update-tocs.sh
