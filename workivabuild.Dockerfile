@@ -32,10 +32,5 @@ RUN cp ./MANIFEST.yml /audit/MANIFEST.yml
 RUN cp ./pom.xml /audit/pom.xml
 ARG BUILD_ARTIFACTS_AUDIT=/audit/*
 
-## Upload Code-Coverage Report
-ARG GIT_COMMIT
-ARG GIT_BRANCH
-RUN ./scripts/ci/codecov.sh
-
 # Prepare Final Image
 FROM scratch
